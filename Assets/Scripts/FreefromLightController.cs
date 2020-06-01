@@ -24,12 +24,12 @@ public class FreefromLightController : MonoBehaviour
             transform.position -= step;
         }
 
-        Debug.Log("deltaTime: " + Time.deltaTime);
+        //Debug.Log("deltaTime: " + Time.deltaTime);
     }
 
     private void FixedUpdate()
     {
-        Debug.Log("fixedDeltaTime: " + Time.fixedDeltaTime);
+        //Debug.Log("fixedDeltaTime: " + Time.fixedDeltaTime);
     }
 
 }

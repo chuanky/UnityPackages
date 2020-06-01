@@ -18,8 +18,8 @@ public class BattleSystem : MonoBehaviour
     }
 
     private enum State{
-        WaitingForPlayer,
-        Busy,
+        PLAYER_TURN,
+        BUSY,
     }
 
     private void Awake()
@@ -32,24 +32,15 @@ public class BattleSystem : MonoBehaviour
     {
         playerController = SpawnPlayer(new Vector3(-4, 0, 0));
         enemyController = SpawnEnemy(new Vector3(1, 0, 0));
-        state = State.WaitingForPlayer;
+        state = State.PLAYER_TURN;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (state == State.WaitingForPlayer)
+        if (Input.GetKeyDown(KeyCode.Space) && state == State.PLAYER_TURN)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                state = State.Busy;
-                playerController.Attack(enemyController);
-            }
-        }
-
-        if (playerController.getAttackComplete() == true && state == State.Busy)
-        {
-            state = State.WaitingForPlayer;
+            playerController.Attack();
         }
     }
 
