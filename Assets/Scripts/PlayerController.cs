@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     {
         animController.PlayAnim("Player_Action", () => {
             Debug.Log("Attack Finished");
+            animController.PlayAnim("Player_Idle", null);
         });
     }
 }
