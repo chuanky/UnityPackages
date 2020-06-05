@@ -12,14 +12,20 @@ public class BattleSystem : MonoBehaviour
     private EnemyController enemyController;
     private State state;
 
+    private BattleSystem()
+    {
+        if (instance == null) instance = this;
+    }
+
     public static BattleSystem GetInstance()
     {
-        return instance;
+        return new BattleSystem();
     }
 
     private enum State{
         PLAYER_TURN,
         BUSY,
+        ENEMY_TURN,
     }
 
     private void Awake()
@@ -40,8 +46,26 @@ public class BattleSystem : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && state == State.PLAYER_TURN)
         {
-            playerController.Attack();
+            state = State.BUSY;
+            playerController.Attack(enemyController.transform, OnPlayerAttackFinished);
         }
+
+        if (state == State.ENEMY_TURN)
+        {
+            state = State.BUSY;
+            Debug.Log("Enemy Turn");
+            enemyController.Attack(playerController.transform, OnEnemyAttackFinished);
+        }
+    }
+
+    private void OnPlayerAttackFinished()
+    {
+        state = State.ENEMY_TURN;
+    }
+
+    private void OnEnemyAttackFinished()
+    {
+        state = State.PLAYER_TURN;
     }
 
     private PlayerController SpawnPlayer(Vector3 position)
