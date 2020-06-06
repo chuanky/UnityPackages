@@ -5,15 +5,12 @@ using System;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed;
-
     private Vector3 targetPosition;
     private AnimController animController;
 
     // Start is called before the first frame update
     void Start()
     {
-        speed = 10f;
         targetPosition = transform.position;
         animController = GetComponent<AnimController>();
     }
@@ -29,14 +26,14 @@ public class PlayerController : MonoBehaviour
         Vector3 initPosition = transform.position;
         targetPosition = target.position - new Vector3(1, 0, 0);
 
-        animController.MoveAnim(targetPosition, speed, () =>
+        animController.MoveAnim(targetPosition, () =>
         {
             Debug.Log("move towards enemy finished");
             animController.PlayAnim("Player_Attack", () =>
             {
                 Debug.Log("attack finished");
                 animController.PlayAnim("Player_Idle", null);
-                animController.MoveAnim(initPosition, speed, () =>
+                animController.MoveAnim(initPosition, () =>
                 {
                     Debug.Log("move back finished");
                     OnAttackFinished?.Invoke();

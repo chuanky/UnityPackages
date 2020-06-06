@@ -12,32 +12,34 @@ public class AnimController : MonoBehaviour
     private String defaultClipName;
 
     private Vector3 targetPos;
-    private float moveSpeed;
     private bool moveEventFired;
+
+    private AnimatorData animatorData;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         defaultClipName = animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+        animatorData = GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<AnimatorData>();
         targetPos = transform.position;
-        moveSpeed = 0f;
         moveEventFired = false;
     }
 
     public void PlayAnim(string clipName, Action onAnimFinished)
     {
         this.onAnimFinished = onAnimFinished;
+        animator.speed = animatorData.speedRate;
         animator.Play(clipName, 0, 0);
     }
 
-    public void MoveAnim(Vector3 targetPos, float moveSpeed, Action onMoveFinished)
+    public void MoveAnim(Vector3 targetPos, Action onMoveFinished)
     {
         this.targetPos = targetPos;
-        this.moveSpeed = moveSpeed;
         this.onMoveFinished = onMoveFinished;
         moveEventFired = false;
 
-        transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+        float speed = animatorData.moveSpeed * animatorData.speedRate * Time.deltaTime;
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, speed);
     }
 
     // Update is called once per frame
@@ -62,7 +64,7 @@ public class AnimController : MonoBehaviour
 
         if (transform.position != targetPos)
         {
-            MoveAnim(targetPos, moveSpeed, onMoveFinished);
+            MoveAnim(targetPos, onMoveFinished);
         }
     }
 
