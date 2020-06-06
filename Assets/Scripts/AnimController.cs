@@ -7,21 +7,27 @@ public class AnimController : MonoBehaviour
 {
     public Action onAnimFinished;
     public Action onMoveFinished;
+
     private Animator animator;
-    private float animTimer;
-    private bool animEventFired;
+    private String defaultClipName;
+
     private Vector3 targetPos;
     private float moveSpeed;
     private bool moveEventFired;
 
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+        defaultClipName = animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+        targetPos = transform.position;
+        moveSpeed = 0f;
+        moveEventFired = false;
+    }
+
     public void PlayAnim(string clipName, Action onAnimFinished)
     {
-        this.animator = GetComponent<Animator>();
-        this.animTimer = this.animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
         this.onAnimFinished = onAnimFinished;
-        this.animEventFired = false;
-
-        this.animator.Play(clipName, 0, 0);
+        animator.Play(clipName, 0, 0);
     }
 
     public void MoveAnim(Vector3 targetPos, float moveSpeed, Action onMoveFinished)
@@ -29,7 +35,7 @@ public class AnimController : MonoBehaviour
         this.targetPos = targetPos;
         this.moveSpeed = moveSpeed;
         this.onMoveFinished = onMoveFinished;
-        this.moveEventFired = false;
+        moveEventFired = false;
 
         transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
     }
@@ -37,11 +43,15 @@ public class AnimController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        animTimer = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
-        if (animTimer >= 1 && animEventFired == false)
+        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
         {
-            animEventFired = true;
-            onAnimFinished?.Invoke();
+            if (onAnimFinished != null)
+            {
+                onAnimFinished.Invoke();
+            } else
+            {
+                animator.Play(defaultClipName, 0, 0);
+            }
         }
 
         if (transform.position == targetPos && moveEventFired == false)

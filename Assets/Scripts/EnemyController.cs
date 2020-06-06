@@ -7,6 +7,7 @@ public class EnemyController : MonoBehaviour
 {
     public float speed;
 
+    private Vector3 initPosition;
     private Vector3 targetPosition;
     private AnimController animController;
 
@@ -14,10 +15,9 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         speed = 10f;
+        initPosition = transform.position;
         targetPosition = transform.position;
         animController = GetComponent<AnimController>();
-        animController.PlayAnim("Idle", null);
-        animController.MoveAnim(targetPosition, speed, null);
     }
 
     // Update is called once per frame
@@ -28,22 +28,26 @@ public class EnemyController : MonoBehaviour
 
     public void Attack(Transform target, Action OnAttackFinished)
     {
-        Vector3 initPosition = transform.position;
         targetPosition = target.position + new Vector3(1, 0, 0);
 
         animController.MoveAnim(targetPosition, speed, () =>
         {
-            Debug.Log("move towards enemy finished");
             animController.PlayAnim("Enemy_Attack", () =>
             {
-                Debug.Log("attack finished");
                 animController.PlayAnim("Enemy_Idle", null);
                 animController.MoveAnim(initPosition, speed, () =>
                 {
-                    Debug.Log("move back finished");
+                    Debug.Log("enemy attack finished");
                     OnAttackFinished?.Invoke();
                 });
             });
+        });
+    }
+
+    public void TakeDamage(Action OnTakeDamageFinished)
+    {
+        animController.PlayAnim("Enemy_TakeDmg", () => {
+            animController.PlayAnim("Enemy_Idle", OnTakeDamageFinished);
         });
     }
 }

@@ -10,15 +10,12 @@ public class PlayerController : MonoBehaviour
     private Vector3 targetPosition;
     private AnimController animController;
 
-    private Action OnAttackFinished;
     // Start is called before the first frame update
     void Start()
     {
         speed = 10f;
         targetPosition = transform.position;
         animController = GetComponent<AnimController>();
-        animController.PlayAnim("Player_Idle", null);
-        animController.MoveAnim(targetPosition, speed, null);
     }
 
     // Update is called once per frame

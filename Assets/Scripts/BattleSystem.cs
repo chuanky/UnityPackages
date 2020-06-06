@@ -47,25 +47,37 @@ public class BattleSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && state == State.PLAYER_TURN)
         {
             state = State.BUSY;
-            playerController.Attack(enemyController.transform, OnPlayerAttackFinished);
+            playerController.Attack(enemyController.transform, () => { enemyController.TakeDamage(EnemyTurn); });
         }
 
         if (state == State.ENEMY_TURN)
         {
             state = State.BUSY;
-            Debug.Log("Enemy Turn");
-            enemyController.Attack(playerController.transform, OnEnemyAttackFinished);
+            enemyController.Attack(playerController.transform, PlayerTurn);
+        }
+
+        //for testing
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            state = State.BUSY;
+            enemyController.TakeDamage(null);
+        }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            state = State.BUSY;
+            enemyController.Attack(playerController.transform, null);
         }
     }
 
-    private void OnPlayerAttackFinished()
-    {
-        state = State.ENEMY_TURN;
-    }
-
-    private void OnEnemyAttackFinished()
+    private void PlayerTurn()
     {
         state = State.PLAYER_TURN;
+    }
+
+    private void EnemyTurn()
+    {
+        state = State.ENEMY_TURN;
     }
 
     private PlayerController SpawnPlayer(Vector3 position)
