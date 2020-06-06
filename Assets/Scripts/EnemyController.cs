@@ -34,7 +34,6 @@ public class EnemyController : MonoBehaviour
                 animController.PlayAnim("Enemy_Idle", null);
                 animController.MoveAnim(initPosition, () =>
                 {
-                    Debug.Log("enemy attack finished");
                     OnAttackFinished?.Invoke();
                 });
             });

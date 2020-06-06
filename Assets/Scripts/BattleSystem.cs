@@ -53,7 +53,7 @@ public class BattleSystem : MonoBehaviour
         if (state == State.ENEMY_TURN)
         {
             state = State.BUSY;
-            enemyController.Attack(playerController.transform, PlayerTurn);
+            enemyController.Attack(playerController.transform, () => { playerController.TakeDamage(PlayerTurn); });
         }
 
         //for testing

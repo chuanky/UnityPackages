@@ -270,7 +270,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.482
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.6
   m_LightVolumeOpacity: 0
   m_ApplyToSortingLayers: 00000000
   m_LightCookieSprite: {fileID: 0}
@@ -288,7 +288,7 @@ MonoBehaviour:
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1
-  m_ShapeLightFalloffSize: 1.31
+  m_ShapeLightFalloffSize: 1.6
   m_ShapeLightFalloffOffset: {x: 2.61, y: -5.71}
   m_ShapePath:
   - {x: -0.5, y: -0.5, z: 0}
@@ -1956,9 +1956,10 @@ GameObject:
   m_Component:
   - component: {fileID: 809987567}
   - component: {fileID: 809987566}
+  - component: {fileID: 809987568}
   m_Layer: 0
   m_Name: BattleSystem
-  m_TagString: Untagged
+  m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1991,6 +1992,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &809987568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809987565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1184a721f3e8f4f739fe0ab35357855c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedRate: 1.5
+  moveSpeed: 8
 --- !u!1 &1155243697
 GameObject:
   m_ObjectHideFlags: 0
