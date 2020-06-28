@@ -40,7 +40,8 @@ public class EnemyController : MonoBehaviour
     {
         animController.PlayAnim("Enemy_TakeDmg", () => {
             enemyStatus.TakeDamage(amount);
-            animController.PlayAnim("Enemy_Idle", OnTakeDamageFinished);
+            animController.PlayAnim("Enemy_Idle", null);
+            OnTakeDamageFinished?.Invoke();
         });
     }
 }

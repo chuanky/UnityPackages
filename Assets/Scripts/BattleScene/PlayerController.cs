@@ -30,7 +30,6 @@ public class PlayerController : MonoBehaviour
                 animController.PlayAnim("Player_Idle", null);
                 animController.MoveAnim(initPosition, () =>
                 {
-                    Debug.Log("player attack finished");
                     OnAttackFinished?.Invoke();
                 });
             });
@@ -41,7 +40,8 @@ public class PlayerController : MonoBehaviour
     {
         animController.PlayAnim("Player_TakeDmg", () => {
             playerStatus.TakeDamage(amount);
-            animController.PlayAnim("Player_Idle", OnTakeDamageFinished);
+            animController.PlayAnim("Player_Idle", null);
+            OnTakeDamageFinished?.Invoke();
         });
     }
 }

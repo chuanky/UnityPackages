@@ -49,7 +49,6 @@ public class BattleSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && state == State.PLAYER_TURN)
         {
             state = State.BUSY;
-            Debug.Log("Player Acting");
             int amount = GetDamageAmount(playerStatus, enemyStatus);
             playerController.Attack(enemyController.transform, () => { enemyController.TakeDamage(amount, EnemyTurn); });
         }
@@ -57,7 +56,6 @@ public class BattleSystem : MonoBehaviour
         if (state == State.ENEMY_TURN)
         {
             state = State.BUSY;
-            Debug.Log("Enemy Acting");
             int amount = GetDamageAmount(enemyStatus, playerStatus);
             enemyController.Attack(playerController.transform, () => { playerController.TakeDamage(amount, PlayerTurn); });
         }

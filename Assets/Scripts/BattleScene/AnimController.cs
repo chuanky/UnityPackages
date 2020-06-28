@@ -10,6 +10,7 @@ public class AnimController : MonoBehaviour
 
     private Animator animator;
     private String defaultClipName;
+    private bool animEventFired;
 
     private Vector3 targetPos;
     private bool moveEventFired;
@@ -21,12 +22,15 @@ public class AnimController : MonoBehaviour
         animator = GetComponent<Animator>();
         defaultClipName = animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
         animatorData = GameObject.FindGameObjectsWithTag("GameController")[0].GetComponent<AnimatorData>();
+        animEventFired = false;
         targetPos = transform.position;
         moveEventFired = false;
     }
 
     public void PlayAnim(string clipName, Action onAnimFinished)
     {
+        Debug.Log("playing " + clipName);
+        animEventFired = false;
         this.onAnimFinished = onAnimFinished;
         animator.speed = animatorData.speedRate;
         animator.Play(clipName, 0, 0);
@@ -45,10 +49,12 @@ public class AnimController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1 && animEventFired == false)
         {
+            Debug.Log(this + " " + animator.GetCurrentAnimatorClipInfo(0)[0].clip.name);
             if (onAnimFinished != null)
             {
+                animEventFired = true;
                 onAnimFinished.Invoke();
             } else
             {
