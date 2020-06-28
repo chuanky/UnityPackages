@@ -9,7 +9,9 @@ public class BattleSystem : MonoBehaviour
 
     private static BattleSystem instance;
     private PlayerController playerController;
+    private PlayerStatus playerStatus;
     private EnemyController enemyController;
+    private EnemyStatus enemyStatus;
     private State state;
 
     private BattleSystem()
@@ -47,20 +49,24 @@ public class BattleSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && state == State.PLAYER_TURN)
         {
             state = State.BUSY;
-            playerController.Attack(enemyController.transform, () => { enemyController.TakeDamage(EnemyTurn); });
+            Debug.Log("Player Acting");
+            int amount = GetDamageAmount(playerStatus, enemyStatus);
+            playerController.Attack(enemyController.transform, () => { enemyController.TakeDamage(amount, EnemyTurn); });
         }
 
         if (state == State.ENEMY_TURN)
         {
             state = State.BUSY;
-            enemyController.Attack(playerController.transform, () => { playerController.TakeDamage(PlayerTurn); });
+            Debug.Log("Enemy Acting");
+            int amount = GetDamageAmount(enemyStatus, playerStatus);
+            enemyController.Attack(playerController.transform, () => { playerController.TakeDamage(amount, PlayerTurn); });
         }
 
         //for testing
         if (Input.GetKeyDown(KeyCode.D))
         {
             state = State.BUSY;
-            enemyController.TakeDamage(null);
+            enemyController.TakeDamage(0, null);
         }
 
         if (Input.GetKeyDown(KeyCode.A))
@@ -72,25 +78,32 @@ public class BattleSystem : MonoBehaviour
 
     private void PlayerTurn()
     {
+        Debug.Log("entering player turn");
         state = State.PLAYER_TURN;
     }
 
     private void EnemyTurn()
     {
+        Debug.Log("entering enemy turn");
         state = State.ENEMY_TURN;
     }
 
     private PlayerController SpawnPlayer(Vector3 position)
     {
         Transform charactor = Instantiate(pfPlayer, position, Quaternion.identity);
-        charactor.transform.localScale = new Vector3(-1, 1, 1);
-
+        playerStatus = charactor.GetComponent<PlayerStatus>();
         return charactor.GetComponent<PlayerController>();
     }
 
     private EnemyController SpawnEnemy(Vector3 position)
     {
         Transform charactor = Instantiate(pfEnemy, position, Quaternion.identity);
+        enemyStatus = charactor.GetComponent<EnemyStatus>();
         return charactor.GetComponent<EnemyController>();
+    }
+
+    private int GetDamageAmount(EntityStatus source, EntityStatus target)
+    {
+        return source.damage - target.defence;
     }
 }

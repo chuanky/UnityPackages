@@ -8,6 +8,7 @@ public class EnemyController : MonoBehaviour
     private Vector3 initPosition;
     private Vector3 targetPosition;
     private AnimController animController;
+    private EnemyStatus enemyStatus;
 
     // Start is called before the first frame update
     void Start()
@@ -15,12 +16,7 @@ public class EnemyController : MonoBehaviour
         initPosition = transform.position;
         targetPosition = transform.position;
         animController = GetComponent<AnimController>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        enemyStatus = GetComponent<EnemyStatus>();
     }
 
     public void Attack(Transform target, Action OnAttackFinished)
@@ -40,9 +36,10 @@ public class EnemyController : MonoBehaviour
         });
     }
 
-    public void TakeDamage(Action OnTakeDamageFinished)
+    public void TakeDamage(int amount, Action OnTakeDamageFinished)
     {
         animController.PlayAnim("Enemy_TakeDmg", () => {
+            enemyStatus.TakeDamage(amount);
             animController.PlayAnim("Enemy_Idle", OnTakeDamageFinished);
         });
     }
