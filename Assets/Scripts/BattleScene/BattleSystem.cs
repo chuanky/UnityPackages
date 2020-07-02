@@ -59,30 +59,15 @@ public class BattleSystem : MonoBehaviour
             int amount = GetDamageAmount(enemyStatus, playerStatus);
             enemyController.Attack(playerController.transform, () => { playerController.TakeDamage(amount, PlayerTurn); });
         }
-
-        //for testing
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            state = State.BUSY;
-            enemyController.TakeDamage(0, null);
-        }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            state = State.BUSY;
-            enemyController.Attack(playerController.transform, null);
-        }
     }
 
     private void PlayerTurn()
     {
-        Debug.Log("entering player turn");
         state = State.PLAYER_TURN;
     }
 
     private void EnemyTurn()
     {
-        Debug.Log("entering enemy turn");
         state = State.ENEMY_TURN;
     }
 

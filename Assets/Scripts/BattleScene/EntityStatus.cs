@@ -28,4 +28,9 @@ public class EntityStatus : MonoBehaviour
     {
         return currentHealth / (float)maxHealth;
     }
+
+    public bool ShouldDie()
+    {
+        return currentHealth <= 0;
+    }
 }
